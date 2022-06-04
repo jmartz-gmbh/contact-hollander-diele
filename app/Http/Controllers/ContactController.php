@@ -2,28 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class ContactController extends Controller
 {
-    public function send()
+    public function send(Request $request)
     {
-        $arrayEmails = ['test@jmartz.de'];
-        $emailSubject = 'My Subject';
-        $emailBody = 'Hello, this is my message content.';
+        $validated = $request->validate([
+            'name' => 'required|max:25',
+            'subject' => 'required|max:50',
+            'message' => 'required|max:255',
+        ]);
 
-        Mail::send(
-            'emails.normal',
-            ['msg' => $emailBody],
-            function ($message) use ($arrayEmails, $emailSubject) {
-                $message->to($arrayEmails)
-                    ->subject($emailSubject);
-            }
-        );
+        Mail::raw($request->input('message'), function ($msg) use ($request) {
+            $msg->to('test@jmartz.de')->subject($request->input('subject'))->from($request->input('email'));
+        });
 
         return response()->json([
-            'name' => 'Abigail',
-            'state' => 'CA',
+            'message' => 'Email successfull send'
         ]);
     }
 }
