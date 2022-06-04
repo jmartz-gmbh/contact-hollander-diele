@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
@@ -14,5 +15,9 @@ class ContactController extends Controller
               ->setBody('Hi, welcome user!');
           });
           
+          return response()->json([
+            'name' => 'Abigail',
+            'state' => 'CA',
+        ]);
     }
 }
