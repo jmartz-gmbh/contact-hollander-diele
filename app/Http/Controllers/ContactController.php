@@ -17,7 +17,7 @@ class ContactController extends Controller
         ]);
 
         Mail::raw($request->input('message'), function ($msg) use ($request) {
-            $msg->to('test@jmartz.de')->subject('Kontaktformular')->from($request->input('email'));
+            $msg->to('mail@hollander-diele.de')->subject('Kontaktformular')->from($request->input('email'));
         });
 
         return response()->json([
